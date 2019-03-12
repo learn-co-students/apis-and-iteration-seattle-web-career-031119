@@ -28,8 +28,7 @@ def get_character_movies_from_api(character_name)
   response_hash = JSON.parse(response_string)
 
   film_apis = get_film_apis(character_name, response_hash)
-  movie_array = get_movie_array(film_apis)
-  binding.pry
+  get_movie_array(film_apis)
 
   # iterate over the response hash to find the collection of `films` for the given
   #   `character`
@@ -42,7 +41,22 @@ def get_character_movies_from_api(character_name)
   #  of movies by title. Have a play around with the puts with other info about a given film.
 end
 
+def create_movie_hash(movie_arr)
+    movie_hash = {}
+    movie_arr.each { |film|
+      movie_hash[film["episode_id"]] = {"title" => film["title"], "year" => film["release_date"][0..3]}
+      }
+    movie_hash
+end
+
 def print_movies(films)
+  movie_hash = create_movie_hash(films)
+  (1..8).each { |i|
+    if movie_hash.has_key?(i)
+      puts "Episode #{i}: #{movie_hash[i]["title"]} (#{movie_hash[i]["year"]})"
+    end
+  }
+
   # some iteration magic and puts out the movies in a nice list
 end
 
