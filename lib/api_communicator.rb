@@ -24,10 +24,18 @@ end
 
 def get_character_movies_from_api(character_name)
   #make the web request
+
   response_string = RestClient.get('http://www.swapi.co/api/people/')
   response_hash = JSON.parse(response_string)
 
   film_apis = get_film_apis(character_name, response_hash)
+
+  while film_apis.empty?
+    response_string = RestClient.get(response_hash["next"])
+    response_hash = JSON.parse(response_string)
+    film_apis = get_film_apis(character_name, response_hash)
+  end
+
   get_movie_array(film_apis)
 
   # iterate over the response hash to find the collection of `films` for the given
