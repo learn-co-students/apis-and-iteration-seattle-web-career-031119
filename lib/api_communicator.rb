@@ -46,7 +46,7 @@ def get_character_movies_from_api(character_name)
     film_apis = get_film_apis(character_name, response_hash)
     url = response_hash["next"]
 
-    if !response_hash.has_key?("next") && film_apis.empty?
+    if response_hash["next"] == nil && film_apis.empty?
       puts "That character is not in Star Wars, you dolt."
       break
     end
